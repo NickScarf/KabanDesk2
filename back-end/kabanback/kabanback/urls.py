@@ -21,11 +21,11 @@ from kabandesk import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/user/get_by_status/<int:user_id>/<int:status>', views.task_get_all_by_id, name='task_get_all_by_id'),
-    path('api/user/get/<int:key>', views.task_get, name='task_get'),
-    path('api/user/add/',views.task_create ,name='task_create'),
-    path('api/user/update/<int:key>/',views.task_update ,name='task_update'),
-    path('api/user/delete/<int:key>/',views.task_delete ,name='task_delete'),
+    path('api/task/get_by_status/<int:user_id>/<int:status>', views.task_get_all_by_status, name='task_get_all_by_status'),
+    path('api/task/get/<int:key>', views.task_get, name='task_get'),
+    path('api/task/add/',views.task_create ,name='task_create'),
+    path('api/task/update/<int:key>/',views.task_update ,name='task_update'),
+    path('api/task/delete/<int:key>/',views.task_delete ,name='task_delete'),
 
 
 ]
