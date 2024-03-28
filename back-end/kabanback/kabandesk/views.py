@@ -1,14 +1,14 @@
 from django.shortcuts import render
-from .models import Table, Task, User
-from .serializers import TableSerializer, TaskSerializer, UserSerializer
+from .models import Task, User
+from .serializers import TaskSerializer, UserSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 
 
 @api_view(['GET'])
-def task_get_all_by_id(request,user_id):
-    objects = Task.objects.get(owner=user_id)
+def task_get_all_by_status(request,user_id,status):
+    objects = Task.objects.get(owner=user_id,status=status)
     serializer = TaskSerializer(objects, many=True)
     return Response(serializer.data)
 
@@ -87,35 +87,9 @@ def task_delete(request,key):
     object.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
-
 @api_view(['GET'])
-def table_get_by_id(request,key):
-    object = Table.objects.get(pk=key)
-    serializer = TableSerializer(object)
+def user_get(request,key):
+    object = User.objects.get(pk=key)
+    serializer = UserSerializer(object)
     return Response(serializer.data)
-
-@api_view(['GET'])
-def table_get_by_user(request,key):
-    object = Table.objects.get(owner=key)
-    serializer = TableSerializer(object)
-    return Response(serializer.data)
-
-@api_view(['POST'])
-def table_create(request):
-    serializer = TableSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(status=status.HTTP_201_CREATED)
-    else:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['DELETE'])
-def table_delete(request,key):
-    try:
-        object = Table.objects.get(pk=key)
-    except Table.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    object.delete()
-    return Response(status=status.HTTP_204_NO_CONTENT)
 
