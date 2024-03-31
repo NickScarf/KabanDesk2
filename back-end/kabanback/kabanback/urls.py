@@ -31,6 +31,7 @@ urlpatterns = [
     path('api/task/update/status_decrease/<int:key>/',views.task_status_decrease ,name='task_status_decrease'),
     path('api/user/get/<int:key>',views.user_get ,name='user_get'),
     path('api/user/validate/<str:username>/<str:password>',views.user_validate ,name='user_validate'),
-    path('api/user/create/',views.user_validate ,name='user_validate'),
+    path('api/user/check/<int:id>/<str:username>',views.user_check ,name='user_check'),
+    path('api/user/create/',views.user_create ,name='user_create'),
 
 ]

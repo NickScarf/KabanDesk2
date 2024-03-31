@@ -88,6 +88,18 @@ def user_get(request,key):
     object = User.objects.get(pk=key)
     serializer = UserSerializer(object)
     return Response(serializer.data)
+@api_view(['POST'])
+def user_create(request):
+    object = User.objects.filter(username=request.data['username'])
+    if(object):
+        return Response(0)
+
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(1)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def user_validate(request,username,password):
@@ -100,3 +112,13 @@ def user_validate(request,username,password):
         return Response(serializer.data)
     else:
         return Response(status=status.HTTP_204_NO_CONTENT)
+@api_view(['GET'])
+def user_check(request,id,username):
+    try:
+        object = User.objects.get(pk=id)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if(object.username == username):
+        return Response(data=1,status=status.HTTP_200_OK)
+    else:
+        return Response(data=0,status=status.HTTP_404_NOT_FOUND)

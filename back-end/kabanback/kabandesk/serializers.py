@@ -10,11 +10,5 @@ class TaskSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
-        extra_kwargs = {"password": {"write_only": True}}
+        fields = ['username','id','password']
 
-    def create(self, validated_data):
-        user = User(username=validated_data["username"])
-        user.set_password(validated_data["password"])
-        user.save()
-        return user
