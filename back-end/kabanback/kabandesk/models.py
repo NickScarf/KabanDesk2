@@ -15,5 +15,5 @@ class Task(models.Model):
     description = models.CharField(max_length=50)
     owner = models.ForeignKey('User',on_delete=models.PROTECT,default=0)
     deadline = models.CharField(max_length=12)
-    status = models.IntegerField(default=0)
+    state = models.IntegerField(default=0)
 
