@@ -1,0 +1,55 @@
+.card
+{
+  width: 20vw;
+  position: relative;
+  margin: 10px 0;
+  left: 2.5vw;
+  background-color: aliceblue;
+}
+.card-body
+{
+  background-color: #21242b;
+  border-color: #21242b;
+}
+.card-title
+{
+  color: aliceblue;
+  text-align: center;
+  font-size: 24px;
+}
+
+.card-subtitle
+{
+  color: gainsboro;
+  text-align: left;
+  font-size: 16px;
+}
+.card-text
+{
+  color: aliceblue;
+}
+
+.card-buttons-container
+{
+  position: relative;
+  width: 10vw;
+  align-items: right;
+  align-content: right;
+}
+
+.card-btn-navigate
+{
+  position: relative;
+  margin-right: 10px;
+}
+
+.card-btn-edit
+{
+  position: relative;
+  margin-right: 10px;
+}
+
+.card-btn-remove
+{
+  position: relative;
+}
