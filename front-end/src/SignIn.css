@@ -46,6 +46,8 @@
     height: 5vh;
     left:2.5vw;
     margin-bottom: 2vh;
+    font-size: 2vh;
+    text-align: center;
 }
 
 .buttons

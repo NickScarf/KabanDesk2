@@ -6,7 +6,7 @@ function Note(props) {
   const [task,setTask] = useState(props.task);
   const [deadline,setDeadline] = useState(props.deadline);
   const [status,setStatus] = useState(props.status);
-
+  
   const increaseStatus = async (task_id) =>
   {
     console.log(props);
@@ -64,7 +64,7 @@ function Note(props) {
     return (
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">{task}</h5>
+          <h5 name={id} class="card-title">{task}</h5>
           <h6 class="card-subtitle mb-2">{deadline}</h6>
           <div class="card-buttons-container">
             {status > 0 &&

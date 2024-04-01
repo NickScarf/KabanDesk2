@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState, setState} from 'react';
+import { useEffect, useState, setState,useCallback} from 'react';
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 import { render } from 'react-dom';
 import './App.css';
@@ -11,10 +11,41 @@ import ModalEdit from './components/modalEdit.js';
 
 
 function Workzone() {
-  const rerender = 0;
+  const my_Id = 0;
   const [Data,setData] = useState('');
   const [EditId,setEditId] = useState(0);
   const [Active, setActive] = useState(false);
+
+  function Log_In_check()
+  {
+    const url = "http://localhost:8000/api/user/check/" + localStorage.getItem('id') + "/" + localStorage.getItem('name');
+        fetch(url, {
+          method: "GET",
+          headers: {"Access-Control-Allow-Origin": "*",'Access-Control-Allow-Methods' : 'GET'},
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            let res = data;
+            if(res == 0)
+          {
+            window.location.assign('http://localhost:3000');
+            localStorage.removeItem('id');
+            localStorage.removeItem('name');
+          }
+        })        
+          .catch((error) => {
+            console.log(error);
+          });
+  }
+
+  function Unlog_in()
+  {
+    window.location.assign('http://localhost:3000');
+    localStorage.removeItem('id');
+    localStorage.removeItem('name');
+  }
+
+
   const get_tasks_Data = async (id) =>
   {
       const url = "http://localhost:8000/api/task/get_by_user_id/"+ id;
@@ -31,11 +62,12 @@ function Workzone() {
         });
   }
 
-  const updatescreen = () =>
-  {
-    get_tasks_Data(1);
-  }
+  
 
+  const updatescreen = async () =>
+  {
+    await get_tasks_Data(localStorage.getItem('id'));
+  }
 
   const edittask = (id,task,deadline) =>
   {
@@ -51,6 +83,8 @@ function Workzone() {
       deadline: deadline,
       owner: owner_id
     };
+    if((task)&&(deadline))
+    {
       const url = "http://localhost:8000/api/task/add/";
       await fetch(url, {
         method: "POST",
@@ -62,6 +96,7 @@ function Workzone() {
           console.log(error);
         });
         updatescreen();
+    }
     }
   const UpdateCard = async (task,deadline) =>
     {
@@ -79,12 +114,15 @@ function Workzone() {
           .catch((error) => {
             console.log(error);
           });
-          updatescreen();
+          document.getElementsByName(EditId).task = task;
+          document.getElementsByName(EditId).deadline = deadline;
+          window.location.reload();
           setActive(false);
     }
   
   useEffect(() => {
-    get_tasks_Data(1);
+    Log_In_check();
+    get_tasks_Data(localStorage.getItem('id'));
   }, []);
 
   return (
@@ -105,12 +143,12 @@ function Workzone() {
       </header>
 
 
-      <div class="working-field">
+      <div id="workfield" class="working-field">
         <ul class="note-container" name="column1">
           {
             Data && Data.filter((task) => task.state == 0).map((item, index) =>
             <li key={item.id} sequencenumber={index} data={item} style={{listStyle: 'none'}}>
-              <Note editfunction={edittask} updateFunction={updatescreen} id={item.id} task={item.description} deadline={item.deadline} status={item.state}></Note>
+              <Note name={item.id} editfunction={edittask} updateFunction={updatescreen} id={item.id} task={item.description} deadline={item.deadline} status={item.state}></Note>
             </li>
             )
           }
@@ -119,7 +157,7 @@ function Workzone() {
         {
             Data && Data.filter((task) => task.state == 1).map((item, index) =>
             <li key={item.id} sequencenumber={index} data={item} style={{listStyle: 'none'}}>
-              <Note editfunction={edittask} updateFunction={updatescreen} id={item.id} task={item.description} deadline={item.deadline} status={item.state}></Note>
+              <Note name={item.id} editfunction={edittask} updateFunction={updatescreen} id={item.id} task={item.description} deadline={item.deadline} status={item.state}></Note>
             </li>
             )
           }
@@ -128,7 +166,7 @@ function Workzone() {
         {
             Data && Data.filter((task) => task.state == 2).map((item, index) =>
             <li key={item.id} sequencenumber={index} data={item} style={{listStyle: 'none'}}>
-              <Note editfunction={edittask} updateFunction={updatescreen} id={item.id} task={item.description} deadline={item.deadline} status={item.state}></Note>
+              <Note name={item.id} editfunction={edittask} updateFunction={updatescreen} id={item.id} task={item.description} deadline={item.deadline} status={item.state}></Note>
             </li>
             )
           }
@@ -137,7 +175,7 @@ function Workzone() {
         {
             Data && Data.filter((task) => task.state == 3).map((item, index) =>
             <li key={item.id} sequencenumber={index} data={item} style={{listStyle: 'none'}}>
-              <Note editfunction={edittask} updateFunction={updatescreen} id={item.id} task={item.description} deadline={item.deadline} status={item.state}></Note>
+              <Note name={item.id} editfunction={edittask} updateFunction={updatescreen} id={item.id} task={item.description} deadline={item.deadline} status={item.state}></Note>
             </li>
             )
           }
@@ -147,14 +185,14 @@ function Workzone() {
       <header className="App-header">
       <div> </div>
         <div class="title">KabanDesk</div>
-        <div class="username">username</div>
+        <div class="username">{localStorage.getItem('name')}</div>
 
         <div class='btn-create-container'>
-          <button onClick={() => createCard(1,document.getElementById("taskcreatefield").value,document.getElementById("deadlinecreatefield").value)}type="button" class="btn btn-outline-light btn-create" style={{top:'100px'}}>Create task</button>
+          <button onClick={() => createCard(localStorage.getItem('id'),document.getElementById("taskcreatefield").value,document.getElementById("deadlinecreatefield").value)}type="button" class="btn btn-outline-light btn-create" style={{top:'100px'}}>Create task</button>
         </div>
 
         <div class = 'btn-exit-container'>
-          <button type="button" class="btn btn-outline-danger" style={{top:'100px'}}>Exit</button>
+          <button onClick={() => Unlog_in()}type="button" class="btn btn-outline-danger" style={{top:'100px'}}>Exit</button>
         </div>
         <label class="fieldlabels" style={{left: '20vw'}}>Task</label>
         <label class="fieldlabels" style={{left: '35vw'}}>Deadline</label>
