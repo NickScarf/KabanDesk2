@@ -1,0 +1,80 @@
+.modal-back
+{
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    top:0;
+    left: 0;
+    transform: scale(0);
+}
+
+.modal-back.active
+{
+    transform: scale(1);
+}
+
+
+.centered {
+    position: fixed;
+    left: 50%;
+    
+}
+
+.edit-box
+{
+  width: 15vw;
+  height: 20vh;
+  background-color: #282c34;
+  border: solid 0.7vh;
+  border-color: #ffffff;
+  border-radius: 3vh;
+}
+
+.edit-label
+{
+  color: #ffffff;
+  font-size: 1.5vw;
+  font-family: "Inter-Bold", Helvetica;
+  font-weight: bold;
+  text-align: center;
+  width: 14.5vw;
+}
+
+.information-field
+{
+  background-color: #21242b;
+  border-color: #ffffff;
+  color: #ffffff;
+  font-size: 2vh;
+  text-align: center;
+  border: solid 0.5vh;
+  border-radius: 1vh;
+  width: 10vw;
+  height: 3.5vh;
+  position: relative;
+  left:2.3vw;
+  margin-bottom: 1vh;
+}
+.edit-button
+{
+  width: 5vw;
+  height: 4vh;
+  border: solid;
+  border-color: #ffffff;
+  border-radius: 2vh;
+  font-size: 2vh;
+  font-weight: bold;
+  
+}
+.cancel
+{
+    background-color: #282c34;
+    color: #ffffff;
+}
+
+.submit
+{
+    background-color: #ffffff;
+    color: #21242b;
+}
